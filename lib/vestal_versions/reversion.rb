@@ -6,8 +6,8 @@ module VestalVersions
     # Provides the base instance methods required to revert a versioned instance.
     module InstanceMethods
       # Returns the current version number for the versioned object.
-      def version
-        @version ||= last_version
+      def version_number
+        @version_number ||= last_version
       end
 
       # Accepts a value corresponding to a specific version record, builds a history of changes
@@ -25,7 +25,7 @@ module VestalVersions
       def revert_to(value)
         to_number = versions.number_at(value)
 
-        changes_between(version, to_number).each do |attribute, change|
+        changes_between(version_number, to_number).each do |attribute, change|
           write_attribute(attribute, change.last)
         end
 
@@ -43,7 +43,7 @@ module VestalVersions
       # Returns a boolean specifying whether the object has been reverted to a previous version or
       # if the object represents the latest version in the version history.
       def reverted?
-        version != last_version
+        version_number != last_version
       end
 
       private
@@ -69,13 +69,13 @@ module VestalVersions
         # Clears the cached version number instance variables so that they can be recalculated.
         # Useful after a new version is created.
         def reset_version(version = nil)
-          if version.nil?
+          if version_number.nil?
             @last_version = nil
             @reverted_from = nil
           else
-            @reverted_from = version
+            @reverted_from = version_number
           end
-          @version = version
+          @version = version_number
         end
     end
   end
