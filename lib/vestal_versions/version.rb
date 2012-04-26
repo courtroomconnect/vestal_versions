@@ -4,6 +4,8 @@ require 'active_support/configurable'
 module VestalVersions
   # The ActiveRecord model representing versions.
   class Version < ActiveRecord::Base
+    attr_accessible :modifications, :number, :user
+
     include Comparable
     include ActiveSupport::Configurable
 
